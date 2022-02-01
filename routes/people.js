@@ -84,6 +84,23 @@ router.get("/new/", (req, res) => {
 //      - Em caso de sucesso do INSERT, colocar uma mensagem feliz
 //      - Em caso de erro do INSERT, colocar mensagem vermelhinha
 
+router.post("/", async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    await db.execute(
+      "INSERT INTO person (id, name, alive, eatenBy) VALUES (NULL, ?, ?, NULL)",
+      [name, 1]
+    );
+
+    req.flash("success", "Pessoa adicionada");
+  } catch {
+    req.flash("error", "A pessoa não foi criada");
+  }
+
+  res.redirect("/");
+});
+
 /* DELETE uma pessoa */
 // Exercício 2: IMPLEMENTAR AQUI
 // Dentro da callback de tratamento da rota:
